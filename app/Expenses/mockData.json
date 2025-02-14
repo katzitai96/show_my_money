@@ -1,0 +1,148 @@
+{
+  "expenses": [
+    {
+      "id": 1,
+      "name": "שכר דירה",
+      "amount": -1000,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -1000,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "קניות",
+      "amount": -300,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -100,
+          "description": "רמי לוי שיווק השקמה"
+        },
+        {
+          "id": 2,
+          "date": "2020-01-02",
+          "amount": -100,
+          "description": "סופר לב"
+        },
+        {
+          "id": 3,
+          "date": "2020-01-03",
+          "amount": -100,
+          "description": "רמי לוי שיווק השקמה"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "גז",
+      "amount": -50,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -50,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "תקשורת",
+      "amount": -50,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -50,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "חשמל",
+      "amount": -50,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -50,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "מים",
+      "amount": -50,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -50,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "הוצאות רכב",
+      "amount": -200,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -200,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "ביטוחים",
+      "amount": -100,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": -100,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    }
+  ],
+  "income": [
+    {
+      "id": 1,
+      "name": "משכורת",
+      "amount": 5000,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": 5000,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "מילואים",
+      "amount": 15000,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2020-01-01",
+          "amount": 15000,
+          "description": "העברה מחשבון לחשבון"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+.expensesPage {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.SumRow {
+  display: flex;
+  padding: 0rem 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  width: 100%;
+}
+
+.expenseRow {
+  display: flex;
+  overflow: auto;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+}
+
+.expenseIcon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-left: 1.5rem;
+}
+
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+
+.expensesRowLayout {
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  align-self: stretch;
+  padding: 0rem 0.5rem;
+  width: 100%;
+}
+
+.transactionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  text-wrap: wrap;
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  align-self: stretch;
+  width: 50%;
+}

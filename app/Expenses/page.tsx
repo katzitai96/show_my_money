@@ -1,94 +1,131 @@
 import styles from "./page.module.css";
+import start_monthly_count from "./start_monthly_count";
 import data from "./mockData.json";
+import { Transaction } from "./scraper";
 export interface categorySummary {
   name: string;
   amount: number;
   id?: number;
 }
 
-export default function ExpensesPage() {
-  const totalRegularExpenses = data.expenses
-    .filter((element) => {
-      return element.name === "קניות" || element.name === "מסעדות";
-    })
-    .reduce((acc, expense) => {
-      return acc + expense.amount;
+export default async function ExpensesPage() {
+  const { category_count, all_transactions } = await start_monthly_count(2025, 1);
+  const totalRegularExpenses: number = 0;
+  const totalExpenses: number = category_count
+    .values()
+    .filter((value) => value < 0)
+    .reduce((acc, value) => {
+      return acc + value;
     }, 0);
-  const totalExpenses = data.expenses.reduce((acc, expense) => {
-    return acc + expense.amount;
-  }, 0);
-  const totalIncome = data.income.reduce((acc, income) => {
-    return acc + income.amount;
-  }, 0);
+  const totalIncome: number = category_count
+    .values()
+    .filter((value) => value > 0)
+    .reduce((acc, value) => {
+      return acc + value;
+    }, 0);
 
+  const balance: number = totalIncome + totalExpenses; //expenses are negative
+
+  // create an array of categorySummary objects from the category_count map
+  const categories_count: categorySummary[] = Array.from(category_count.entries()).map(([name, amount], index) => {
+    return { name, amount, id: index };
+  });
+  console.log(categories_count, all_transactions);
   return (
     <div className={styles.expensesPage}>
-      <div className={`${styles.SumRow} ${styles.expensesRowLayout}`}>
-        <h3>תזרים חודשי</h3>
-        <h3 className={`${styles.red}`}>{totalRegularExpenses}</h3>
-      </div>
+      <ExpensesPageSumRow
+        text="תזרים חודשי"
+        amount={Math.round(balance)}
+        color={`${balance >= 0 ? styles.green : styles.red}`}
+      ></ExpensesPageSumRow>
       <h2>הוצאות</h2>
-      <div className={`${styles.SumRow} ${styles.expensesRowLayout}`}>
-        <h3>סה"כ הוצאות קבועות</h3>
-        <h3 className={`${styles.red}`}>{totalRegularExpenses}</h3>
-      </div>
-      <div className={styles.SumRow}>
-        <h3>סה"כ הוצאות</h3>
-        <h3 className={`${styles.red}`}>{totalExpenses}</h3>
-      </div>
-      {data.expenses.map((expense) => {
-        return (
-          <details key={expense.id} style={{ width: "100%" }}>
-            <summary className={`${styles.expenseRow} ${styles.expensesRowLayout}`}>
-              <div className={`${styles.categoryHeader}`}>
-                <div>
-                  <img src="globe.svg" alt="globe" className={styles.expenseIcon} />
-                </div>
-                <h4>{expense.name}</h4>
-              </div>
-              <h4 className={`${styles.red}`}>{expense.amount}</h4>
-            </summary>
-            {expense.transactions.map((transaction) => {
-              return (
-                <div key={transaction.id} className={`${styles.transactionRow} ${styles.expensesRowLayout}`}>
-                  <h5>{transaction.description}</h5>
-                  <h5>{transaction.date}</h5>
-                  <h5 className={`${styles.red}`}>{transaction.amount}</h5>
-                </div>
-              );
-            })}
-          </details>
-        );
-      })}
+      <ExpensesPageSumRow
+        text="סה״כ הוצאות קבועות"
+        amount={Math.round(totalRegularExpenses)}
+        color={styles.red}
+      ></ExpensesPageSumRow>
+      <ExpensesPageSumRow text="סה״כ הוצאות" amount={Math.round(totalExpenses)} color={styles.red}></ExpensesPageSumRow>
+      {categories_count
+        .filter((category) => category.amount <= 0)
+        .map((category, index: number) => {
+          return (
+            <details key={index} className={styles.CategoryRowWrapper}>
+              <summary className={styles.CategoryRowWrapper}>
+                <ExpensesPageCategoryRow category={category} color={styles.red}></ExpensesPageCategoryRow>
+              </summary>
+              {all_transactions
+                .filter((transaction) => transaction.category === category.name)
+                .map((transaction, index2) => {
+                  return (
+                    <ExpensesPageTransactionRow
+                      key={index2}
+                      transaction={transaction}
+                      color={styles.red}
+                    ></ExpensesPageTransactionRow>
+                  );
+                })}
+            </details>
+          );
+        })}
       <h2>הכנסות</h2>
-      <div className={`${styles.SumRow} ${styles.expensesRowLayout}`}>
-        <h3>סה"כ הכנסות</h3>
-        <h3 className={`${styles.green}`}>{totalIncome}</h3>
-      </div>
-      {data.income.map((income) => {
-        return (
-          <details key={income.id} className={`${styles.expensesRowLayout}`}>
-            <summary className={styles.expenseRow}>
+      <ExpensesPageSumRow text="סה״כ הכנסות" amount={Math.round(totalIncome)} color={styles.green}></ExpensesPageSumRow>
+      {categories_count
+        .filter((category) => category.amount > 0)
+        .map((category, index: number) => {
+          return (
+            <details key={index} className={styles.CategoryRowWrapper}>
+              <summary className={styles.CategoryRowWrapper}>
+                <ExpensesPageCategoryRow category={category} color={styles.green}></ExpensesPageCategoryRow>
+              </summary>
               <div>
-                <img src="globe.svg" alt="globe" className={styles.expenseIcon} />
+                {all_transactions
+                  .filter((transaction) => transaction.category === category.name)
+                  .map((transaction, index2) => {
+                    return (
+                      <ExpensesPageTransactionRow
+                        key={index2}
+                        transaction={transaction}
+                        color={styles.green}
+                      ></ExpensesPageTransactionRow>
+                    );
+                  })}
               </div>
-              <h4>{income.name}</h4>
-              <h4 className={`${styles.green}`}>{income.amount}</h4>
-            </summary>
-            <div>
-              {income.transactions.map((transaction) => {
-                return (
-                  <div key={transaction.id} className={`${styles.transactionRow} ${styles.expensesRowLayout}`}>
-                    <h5>{transaction.description}</h5>
-                    <h5>{transaction.date}</h5>
-                    <h5 className={`${styles.green}`}>{transaction.amount}</h5>
-                  </div>
-                );
-              })}
-            </div>
-          </details>
-        );
-      })}
+            </details>
+          );
+        })}
+    </div>
+  );
+}
+
+function ExpensesPageSumRow({ text, amount, color }: { text: string; amount: number; color: string }) {
+  return (
+    <div className={`${styles.SumRowLayout}`}>
+      <h3>{text}</h3>
+      <h3 className={`${color} ${styles.left}`}>{Math.round(amount)}</h3>
+    </div>
+  );
+}
+
+function ExpensesPageCategoryRow({ category, color }: { category: categorySummary; color: string }) {
+  return (
+    <div className={`${styles.CategoryRowLayout}`}>
+      <div className={`${styles.categoryHeader}`}>
+        <div>
+          <img src="globe.svg" alt="globe" className={styles.categoryIcon} />
+        </div>
+        <h4>{category.name}</h4>
+      </div>
+      <h4 className={`${color} ${styles.left}`}>{Math.round(category.amount)}</h4>
+    </div>
+  );
+}
+
+function ExpensesPageTransactionRow({ transaction, color }: { transaction: Transaction; color: string }) {
+  return (
+    <div className={`${styles.transactionRow}`}>
+      <h5>{transaction.description}</h5>
+      <h5>{`${transaction.day}.${transaction.month}.${transaction.year}`}</h5>
+      <h5 className={`${color} ${styles.left}`}>{Math.round(transaction.amount)}</h5>
     </div>
   );
 }

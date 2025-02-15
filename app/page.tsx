@@ -4,7 +4,7 @@ import ExpensesPage from "./Expenses/page";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <header>
         <div className="main-header">
           <h1>Show My Money</h1>
@@ -14,6 +14,6 @@ export default function Home() {
         <ExpensesPage></ExpensesPage>
       </main>
       <footer></footer>
-    </div>
+    </>
   );
 }

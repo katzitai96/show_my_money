@@ -1,0 +1,112 @@
+import { CompanyTypes, createScraper, ScraperCredentials, ScraperScrapingResult } from "israeli-bank-scrapers";
+
+export interface Transaction {
+  description: string;
+  amount: number;
+  year: number;
+  month: number;
+  day: number;
+  category: string;
+}
+
+export async function scraper(
+  company: CompanyTypes,
+  credentials: ScraperCredentials,
+  year: number,
+  month: number
+): Promise<Transaction[]> {
+  let all_transactions: Array<Transaction>;
+  try {
+    let month_index = month - 2;
+    let year_index = year;
+    if (month == 1) {
+      month_index = 11;
+      year_index = year - 1;
+    }
+    const options = {
+      companyId: company,
+      startDate: new Date(year_index, month_index, 28),
+      combineInstallments: false,
+      //   futureMonthsToScrape: 2,
+      // showBrowser: true,
+      additionalTransactionInformation: true,
+    };
+    const scraper = createScraper(options);
+    const scrapeResult: ScraperScrapingResult = await scraper.scrape(credentials);
+    console.log(` --- scraping data from ${company}, from date 1.${month}.${year} ---`);
+    if (scrapeResult.success) {
+      all_transactions = [];
+      let month_str = (options.startDate.getMonth() + 1).toString();
+      if (month_str.length == 1) {
+        month_str = "0" + month_str;
+      }
+      scrapeResult.accounts?.forEach((account) => {
+        console.log(`   --- scraping account number ${account.accountNumber} ---`);
+        account.txns.forEach((transaction) => {
+          const d = new Date(transaction.date);
+          if (d.getMonth() + 1 == month && d.getFullYear() == year && notCreditCard(transaction.description)) {
+            let category = findCategory(transaction.description, transaction.category);
+            console.log(
+              transaction.description,
+              transaction.originalAmount,
+              `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+              category
+            );
+            all_transactions.push({
+              description: transaction.description,
+              amount: transaction.originalAmount,
+              year: d.getFullYear(),
+              month: d.getMonth(),
+              day: d.getDate(),
+              category: category,
+            });
+          }
+        });
+      });
+      console.log(` --- scraping data from ${company} succeeded ---`);
+      return all_transactions;
+    } else {
+      throw new Error(scrapeResult.errorType);
+    }
+  } catch (e: any) {
+    console.error(` --- scraping ${company} failed for the following reason: ${e.message} ---`);
+    await scraper(company, credentials, year, month);
+    return [];
+  }
+}
+
+//function that categorizes the transaction by its description
+function findCategory(description: string, category: string | undefined): string {
+  category = category || "אחר";
+  if (description.includes("משכורת")) {
+    category = "משכורת";
+  } else if (description.includes("שיק")) {
+    category = "שכר דירה";
+  } else if (description.includes("ביט")) {
+    category = "העברת כספים ביט VD/MS";
+  } else if (category.includes("מלונאות ואירוח")) {
+    category = "תיירות";
+  } else if (description.includes("BIT")) {
+    category = "העברת כספים ביט VD/MS";
+  } else if (category.includes("רשתות שווק מזון") || category.includes("מינימרקטים ומכולות")) {
+    category = "מכולת/סופר";
+  } else if (description.includes("התימני") || description.includes("WOLT")) {
+    category = "מסעדות/קפה";
+  } else if (description.includes('ב"ל מילואים') || description.includes('מופ"ת')) {
+    category = "מילואים";
+  } else if (description.includes("מקס אמות")) {
+    category = "כלי בית";
+  } else if (description.includes("Spotify")) {
+    category = "מוסיקה";
+  } else if (category.includes("שונות") || category.includes("אחר")) {
+    category = "אחר";
+  } else if (category.includes("פנאי")) {
+    category = "פנאי בילוי";
+  }
+  return category || "אחר";
+}
+
+//function that checks if the transaction is not a credit card payment
+function notCreditCard(description: string): boolean {
+  return !(description.includes('ישראכרט בע"מ') || description.includes("כרטיסי אשראי") || description.includes("מקט איט"));
+}

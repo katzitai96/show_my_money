@@ -2,61 +2,68 @@
   display: flex;
   width: 100%;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-}
-
-.SumRow {
-  display: flex;
-  padding: 0rem 0.5rem;
-  align-items: center;
-  justify-content: space-between;
-  align-self: stretch;
-  width: 100%;
-}
-
-.expenseRow {
-  display: flex;
-  overflow: auto;
-  align-items: center;
-  justify-content: space-between;
-  align-self: stretch;
-}
-
-.expenseIcon {
-  width: 3.5rem;
-  height: 3.5rem;
-  margin-left: 1.5rem;
 }
 
 .red {
   color: red;
 }
+
 .green {
   color: green;
 }
 
-.expensesRowLayout {
-  /* display: flex;
-  flex-direction: column;
+.left {
+  direction: ltr;
+}
+
+.CategoryRowLayout {
+  display: flex;
   align-items: center;
-  justify-content: center; */
-  align-self: stretch;
-  padding: 0rem 0.5rem;
+  justify-content: space-between;
   width: 100%;
 }
+
+.SumRowLayout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* --- TRANSACTION ROWS --- */
 
 .transactionRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  align-self: stretch;
   text-wrap: wrap;
+  padding-right: 3.5rem;
 }
+
+.transactionRow > h5 {
+  width: 7rem;
+  text-align: center;
+}
+
+/* --- CATEGORY ROWS --- */
 
 .categoryHeader {
   display: flex;
   align-items: center;
   justify-content: right;
-  align-self: stretch;
   width: 50%;
+}
+
+.categoryIcon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-left: 1.5rem;
+}
+
+.CategoryRowWrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 }

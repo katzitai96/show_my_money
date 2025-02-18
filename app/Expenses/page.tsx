@@ -30,7 +30,7 @@ export default async function ExpensesPage() {
   const categories_count: categorySummary[] = Array.from(category_count.entries()).map(([name, amount], index) => {
     return { name, amount, id: index };
   });
-  console.log(categories_count, all_transactions);
+  // console.log(categories_count, all_transactions);
   return (
     <div className={styles.expensesPage}>
       <ExpensesPageSumRow

@@ -46,12 +46,12 @@ export async function scraper(
           const d = new Date(transaction.date);
           if (d.getMonth() + 1 == month && d.getFullYear() == year && notCreditCard(transaction.description)) {
             let category = findCategory(transaction.description, transaction.category);
-            console.log(
-              transaction.description,
-              transaction.originalAmount,
-              `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
-              category
-            );
+            // console.log(
+            //   transaction.description,
+            //   transaction.originalAmount,
+            //   `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
+            //   category
+            // );
             all_transactions.push({
               description: transaction.description,
               amount: transaction.originalAmount,
@@ -69,7 +69,7 @@ export async function scraper(
       throw new Error(scrapeResult.errorType);
     }
   } catch (e: any) {
-    console.error(` --- scraping ${company} failed for the following reason: ${e.message} ---`);
+    console.log(` --- scraping ${company} failed for the following reason: ${e.message} ---`);
     await scraper(company, credentials, year, month);
     return [];
   }

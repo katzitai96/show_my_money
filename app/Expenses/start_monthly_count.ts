@@ -35,78 +35,13 @@ export default async function start_monthly_count(year: number, month: number) {
       important_categories_total -= category_count.get(category) as number;
     }
   });
-  //   category_count.set('סה"כ שוטפות', important_categories_total);
-  // write the items in category_count into a csv file, if it already exists, append to it. write the items in 8-utf format
+
   return { category_count, all_transactions };
-  //   saveToCSV(date, category_count);
 }
 
-start_monthly_count(2024, 11);
-
 /* TODO: categorize bank account transactions
-TODO: combine aliases of the same category
-TODO: add each month with a title and in a seperate columns
-TODO: check adding to a allready created csv file with 8utf encoding
+TODO: combine aliases of the same category 
+TODO: make scraping run on server each 2 hours
+TODO: make the function read data from the DB
+TODO: search for id of transaction in the scraping data
 */
-
-// Function to save credit card usage data to CSV file
-// function saveToCSV(date: string, data: Map<string, number>, fileName = "cashFlow.csv") {
-//   // Check if the CSV file exists
-//   if (fs.existsSync(fileName)) {
-//     // File exists, so we need to append data to the corresponding category
-//     appendDataToCSV(date, data, fileName);
-//   } else {
-//     // File does not exist, so create it and write the header row first
-//     createCSVWithHeader(date, data, fileName);
-//   }
-// }
-
-// Function to create a new CSV file with headers and write the first row of data
-// function createCSVWithHeader(date: string, data: Map<string, number>, filePath: string) {
-//   const header = ["קטגוריה", date];
-//   const allRows = Array.from(data.entries());
-//   // console.log(allRows);
-//   const rows = allRows.map((entry) => `${entry[0]},${entry[1]}`);
-
-//   // Write header and data to the CSV file
-//   const csvContent = [header.join(","), ...rows].join("\n");
-
-//   fs.writeFileSync(filePath, csvContent, "utf-8");
-//   console.log("CSV file created and data saved.");
-// }
-
-// Function to append new data to an existing CSV file
-// function appendDataToCSV(date: string, data: Map<string, number>, filePath: string) {
-//   // Read existing CSV file to get current rows
-//   const existingData = fs.readFileSync(filePath, "utf-8").split("\n");
-
-//   // create a dict of the category and the corresponding index in the csv file
-//   let category_index = new Map<string, number>();
-//   for (let i = 0; i < existingData.length; i++) {
-//     let cur_category = existingData[i].split(",")[0];
-//     category_index.set(cur_category, i);
-//   }
-//   existingData[0] += `,${date}`;
-//   // append the new data to the existing data on the category index
-//   data.forEach((value, key) => {
-//     if (category_index.has(key)) {
-//       existingData[category_index.get(key) as number] += `,${value}`;
-//     } else {
-//       let columns = existingData[0].split(",").length;
-//       let new_row = key;
-//       for (let i = 1; i < columns - 1; i++) {
-//         new_row += ",";
-//       }
-//       new_row += `,${value}`;
-//       existingData.push(new_row);
-//     }
-//   });
-
-// const allRows = Array.from(data.entries());
-// const rows = allRows.map((entry) => `${entry[0]},${entry[1]}`);
-// const updatedContent = [...existingData, ...rows].join("\n");
-
-// Write the updated content back to the CSV file
-//   fs.writeFileSync(filePath, existingData.join("\n"), "utf-8");
-//   console.log("Data appended to the CSV file.");
-// }

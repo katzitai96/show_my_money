@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import start_monthly_count from "./start_monthly_count";
 import data from "./mockData.json";
-import { Transaction } from "./scraper";
+import { Transaction } from "../../lib/scraper/scraper";
 export interface categorySummary {
   name: string;
   amount: number;

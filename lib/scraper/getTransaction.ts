@@ -1,6 +1,6 @@
 import { scraper, Transaction } from "./scraper";
 import { CompanyTypes } from "israeli-bank-scrapers";
-import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../../lib/config";
+import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../config";
 import { createClient } from "@supabase/supabase-js";
 
 export default async function getTransactions(year: number, month: number): Promise<Array<Transaction>> {

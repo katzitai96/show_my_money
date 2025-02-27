@@ -1,12 +1,23 @@
-import getTransactions from "./getTransaction";
-import { Transaction } from "./scraper";
-
+import getTransactions from "../../lib/scraper/getTransaction";
+import { Transaction } from "../../lib/scraper/scraper";
+import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../../lib/config";
+import { createClient } from "@supabase/supabase-js";
 export default async function start_monthly_count(year: number, month: number) {
   let date = `${year}.${month}`;
 
+  const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SERVICE_KEY);
   //get all transactions from the month and year given in the arguments
-  let all_transactions: Array<Transaction> = await getTransactions(year, month);
+  //   let all_transactions: Array<Transaction> = await getTransactions(year, month);
+  let all_transactions: Array<Transaction> = await supabase
+    .from("transactions")
+    .select("*")
+    .eq("year", year)
+    .eq("month", month - 1)
+    .then((data) => {
+      return data.data as Array<Transaction>;
+    });
 
+  console.log(all_transactions);
   //create a map to count the amount of each category
   let category_count = new Map<string, number>();
   all_transactions.forEach((transaction) => {

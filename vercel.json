@@ -6,7 +6,8 @@
     },
     {
       "path": "/api/monthly_count",
-      "schedule": "0 13 * * *"
+      "schedule": "0 13 * * *",
+      "maxDuration": 60
     }
   ]
 }

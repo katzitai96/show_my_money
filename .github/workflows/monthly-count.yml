@@ -30,3 +30,6 @@ jobs:
 
       - name: run monthly count script
         run: node lib/scraper/start_scrap.js
+        env:
+          SUPABASE_URL: "https://pmbkizgjtcqgfebvxkaw.supabase.co"
+          NEXT_PUBLIC_API_URL: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtYmtpemdqdGNxZ2ZlYnZ4a2F3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4OTY4MjksImV4cCI6MjA1NTQ3MjgyOX0.tTXPdVKMcnZ-3B1Z3cso5EFyriTsYRTbfbiO-XpOqDo"

@@ -1,6 +1,6 @@
 import { scraper, Transaction } from "./scraper";
 import { CompanyTypes } from "israeli-bank-scrapers";
-import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../config";
+import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../config.js";
 import { createClient } from "@supabase/supabase-js";
 
 /**

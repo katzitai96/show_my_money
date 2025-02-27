@@ -2,7 +2,7 @@ import getTransactions from "@/lib/scraper/getTransaction";
 
 export const maxDuration = 60;
 
-export async function GET(request: Request) {
+export default async function start_scrap() {
   console.log("running monthly_count");
   const date = new Date(Date.now());
   const cur_month = date.getMonth() + 1;
@@ -11,5 +11,5 @@ export async function GET(request: Request) {
 
   await getTransactions(year_to_fetch, month_to_fetch);
   console.log("finished running monthly_count");
-  return new Response("running monthly_count");
+  // return new Response("running monthly_count");
 }

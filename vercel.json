@@ -3,6 +3,10 @@
     {
       "path": "/api/hello",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/monthly_count",
+      "schedule": "0 9 * * *"
     }
   ]
 }

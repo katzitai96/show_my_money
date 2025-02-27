@@ -10,7 +10,13 @@ export interface categorySummary {
 
 export default async function ExpensesPage() {
   // const { category_count, all_transactions } = {[], []};
-  const { category_count, all_transactions } = await start_monthly_count(2025, 1);
+  const date = new Date(Date.now());
+  const cur_month = date.getMonth() + 1;
+  const month_to_fetch = cur_month === 1 ? 12 : cur_month - 1; // fetch the previous month
+  const year_to_fetch = cur_month === 1 ? date.getFullYear() - 1 : date.getFullYear();
+
+  const { category_count, all_transactions } = await start_monthly_count(year_to_fetch, month_to_fetch);
+
   const totalRegularExpenses: number = 0;
   const totalExpenses: number = category_count
     .values()

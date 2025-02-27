@@ -9,6 +9,7 @@ export interface categorySummary {
 }
 
 export default async function ExpensesPage() {
+  // const { category_count, all_transactions } = {[], []};
   const { category_count, all_transactions } = await start_monthly_count(2025, 1);
   const totalRegularExpenses: number = 0;
   const totalExpenses: number = category_count

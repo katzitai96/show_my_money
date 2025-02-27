@@ -24,7 +24,7 @@ export default async function start_monthly_count(year: number, month: number) {
       return data.data as Array<Transaction>;
     });
 
-  console.log(all_transactions);
+  // console.log(all_transactions);
   //create a map to count the amount of each category
   let category_count = new Map<string, number>();
   all_transactions.forEach((transaction) => {
@@ -38,7 +38,6 @@ export default async function start_monthly_count(year: number, month: number) {
     }
   });
 
-  // add the total amount of the month to the csv file
   let total_amount = 0;
   category_count.forEach((value) => {
     total_amount += value;
@@ -59,7 +58,7 @@ export default async function start_monthly_count(year: number, month: number) {
 
 /* TODO: categorize bank account transactions
 TODO: combine aliases of the same category 
-TODO: make scraping run on server each 2 hours
-TODO: make the function read data from the DB
-TODO: search for id of transaction in the scraping data
+TODO: make scraping run on server each day
+TODO: divide things like BIT to expenses and income
+TODO: add logos to the categories and the site
 */

@@ -23,11 +23,16 @@ export async function scraper(
       month_index = 11;
       year_index = year - 1;
     }
+    const puppeteer = require("puppeteer-core");
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: "wss://chrome.browserless.io?token=Rqo90C4fF5Xibx42297674bdc3d5129eb0dafb4634",
+    });
     const options = {
       companyId: company,
       startDate: new Date(year_index, month_index, 28),
+      browser,
+      skipCloseBrowser: false,
       combineInstallments: false,
-      //   futureMonthsToScrape: 2,
       // showBrowser: true,
       additionalTransactionInformation: true,
     };

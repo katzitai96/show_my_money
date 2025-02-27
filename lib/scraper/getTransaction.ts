@@ -15,13 +15,13 @@ export default async function getTransactions(year: number, month: number): Prom
     CompanyTypes.isracard,
     { id: "208370999", card6Digits: "526028", password: "Tihnun103" },
     year,
-    month - 1
+    month
   );
   all_transactions = all_transactions.concat(new_transaction);
-  new_transaction = await scraper(CompanyTypes.otsarHahayal, { username: "VZ0EFV1", password: "Taabura103!" }, year, month - 1);
+  new_transaction = await scraper(CompanyTypes.otsarHahayal, { username: "VZ0EFV1", password: "Taabura103!" }, year, month);
   all_transactions = all_transactions.concat(new_transaction);
-  new_transaction = await scraper(CompanyTypes.visaCal, { username: "katzitai", password: "Tihnun103" }, year, month - 1);
-  all_transactions = all_transactions.concat(new_transaction);
+  // new_transaction = await scraper(CompanyTypes.visaCal, { username: "katzitai", password: "Tihnun103" }, year, month);
+  // all_transactions = all_transactions.concat(new_transaction);
 
   const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SERVICE_KEY);
 
@@ -36,7 +36,7 @@ export default async function getTransactions(year: number, month: number): Prom
         amount: transaction.amount,
         description: transaction.description,
         year: transaction.year,
-        month: transaction.month,
+        month: transaction.month + 1,
         day: transaction.day,
         category: transaction.category,
       };

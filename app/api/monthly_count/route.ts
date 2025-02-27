@@ -1,5 +1,7 @@
 import getTransactions from "@/lib/scraper/getTransaction";
 
+export const maxDuration = 60;
+
 export async function GET(request: Request) {
   console.log("running monthly_count");
   const date = new Date(Date.now());

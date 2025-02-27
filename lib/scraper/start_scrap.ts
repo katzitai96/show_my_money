@@ -1,4 +1,4 @@
-import getTransactions from "@/lib/scraper/getTransaction";
+import getTransactions from "../scraper/getTransaction";
 
 export const maxDuration = 60;
 

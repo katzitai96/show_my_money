@@ -1,4 +1,4 @@
-import getTransactions from "../scraper/getTransaction";
+import getTransactions from "./getTransaction";
 
 export const maxDuration = 60;
 
@@ -13,3 +13,5 @@ export default async function start_scrap() {
   console.log("finished running monthly_count");
   // return new Response("running monthly_count");
 }
+
+start_scrap();

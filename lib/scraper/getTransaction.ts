@@ -20,8 +20,8 @@ export default async function getTransactions(year: number, month: number): Prom
   all_transactions = all_transactions.concat(new_transaction);
   new_transaction = await scraper(CompanyTypes.otsarHahayal, { username: "VZ0EFV1", password: "Taabura103!" }, year, month);
   all_transactions = all_transactions.concat(new_transaction);
-  new_transaction = await scraper(CompanyTypes.visaCal, { username: "katzitai", password: "Tihnun103" }, year, month);
-  all_transactions = all_transactions.concat(new_transaction);
+  // new_transaction = await scraper(CompanyTypes.visaCal, { username: "katzitai", password: "Tihnun103" }, year, month);
+  // all_transactions = all_transactions.concat(new_transaction);
 
   const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SERVICE_KEY);
 

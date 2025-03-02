@@ -33,7 +33,7 @@ export async function scraper(
       browser,
       skipCloseBrowser: false,
       combineInstallments: false,
-      // showBrowser: true,
+      showBrowser: false,
       additionalTransactionInformation: true,
     };
     const scraper = createScraper(options);

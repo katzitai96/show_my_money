@@ -8,6 +8,46 @@ export interface categorySummary {
   id?: number;
 }
 
+export let category_mapping: Map<string, string> = new Map<string, string>([
+  ["מסעדות/קפה", "מסעדות/קפה"],
+  ["פארמה", "מכולת/סופר"],
+  ["מעדניות", "מכולת/סופר"],
+  ["שרות רפואי", "רפואה"],
+  ["רפואה", "רפואה"],
+  ["מכולת/סופר", "מכולת/סופר"],
+  ["דלק", "דלק"],
+  ["תקשורת", "תקשורת"],
+  ["תרבות", "פנאי ובילויים"],
+  ["פנאי ובילויים", "פנאי ובילויים"],
+  ["העברות כספים פייבוקס D/MS", "העברות כספים"],
+  ["העברות כספים", "העברות כספים"],
+  ["שירותי רכב", "הוצאות רכב"],
+  ["הוצאות רכב", "הוצאות רכב"],
+  ["בתי ספר", "לימודים"],
+  ["לימודים", "לימודים"],
+  ["שכר דירה", "שכר דירה"],
+  ["מילואים", "מילואים"],
+  ["משכורת", "משכורת"],
+  ["אחר", "אחר"],
+]);
+
+export let category_images: Map<string, string> = new Map<string, string>([
+  ["מסעדות/קפה", "restaurant.svg"],
+  ["מכולת/סופר", "shopping-cart.svg"],
+  ["דלק", "gasoline.svg"],
+  ["תקשורת", "communications.svg"],
+  ["דלק", "gasoline.svg"],
+  ["רפואה", "health.svg"],
+  ["פנאי ובילויים", "party.svg"],
+  ["העברות כספים", "cash-flow-icon.svg"],
+  ["הוצאות רכב", "car.svg"],
+  ["מילואים", "military.svg"],
+  ["משכורת", "salary.svg"],
+  ["אחר", "globe.svg"],
+  ["לימודים", "study.svg"],
+  ["שכר דירה", "rent.svg"],
+]);
+
 export default async function ExpensesPage() {
   // const { category_count, all_transactions } = {[], []};
   const date = new Date(Date.now());
@@ -15,9 +55,12 @@ export default async function ExpensesPage() {
   const month_to_fetch = cur_month === 1 ? 12 : cur_month - 1; // fetch the previous month
   const year_to_fetch = cur_month === 1 ? date.getFullYear() - 1 : date.getFullYear();
 
-  const { category_count, all_transactions } = await start_monthly_count(year_to_fetch, month_to_fetch);
+  const { category_count, all_transactions, important_categories_total } = await start_monthly_count(
+    year_to_fetch,
+    month_to_fetch
+  );
 
-  const totalRegularExpenses: number = 0;
+  // const totalRegularExpenses: number = category_count.get("סהכ קבועות") || 0;
   const totalExpenses: number = category_count
     .values()
     .filter((value) => value < 0)
@@ -48,12 +91,13 @@ export default async function ExpensesPage() {
       <h2>הוצאות</h2>
       <ExpensesPageSumRow
         text="סה״כ הוצאות קבועות"
-        amount={Math.round(totalRegularExpenses)}
+        amount={Math.round(important_categories_total)}
         color={styles.red}
       ></ExpensesPageSumRow>
       <ExpensesPageSumRow text="סה״כ הוצאות" amount={Math.round(totalExpenses)} color={styles.red}></ExpensesPageSumRow>
       {categories_count
         .filter((category) => category.amount <= 0)
+        .toSorted((category1, category2) => category1.amount - category2.amount)
         .map((category, index: number) => {
           return (
             <details key={index} className={styles.CategoryRowWrapper}>
@@ -78,6 +122,7 @@ export default async function ExpensesPage() {
       <ExpensesPageSumRow text="סה״כ הכנסות" amount={Math.round(totalIncome)} color={styles.green}></ExpensesPageSumRow>
       {categories_count
         .filter((category) => category.amount > 0)
+        .toSorted((category1, category2) => category2.amount - category1.amount)
         .map((category, index: number) => {
           return (
             <details key={index} className={styles.CategoryRowWrapper}>
@@ -118,7 +163,7 @@ function ExpensesPageCategoryRow({ category, color }: { category: categorySummar
     <div className={`${styles.CategoryRowLayout}`}>
       <div className={`${styles.categoryHeader}`}>
         <div>
-          <img src="globe.svg" alt="globe" className={styles.categoryIcon} />
+          <img src={`${category_images.get(category.name)}`} alt="globe" className={styles.categoryIcon} />
         </div>
         <h4>{category.name}</h4>
       </div>

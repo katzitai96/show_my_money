@@ -2,6 +2,7 @@ import getTransactions from "../../lib/scraper/getTransaction";
 import { Transaction } from "../../lib/scraper/scraper";
 import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../../lib/config";
 import { createClient } from "@supabase/supabase-js";
+import { category_mapping } from "./page";
 
 /**
  *  sum all transactions in a given month and year for each category
@@ -10,11 +11,8 @@ import { createClient } from "@supabase/supabase-js";
  * @returns a map of the categories and the amount of each category
  */
 export default async function start_monthly_count(year: number, month: number) {
-  // let date = `${year}.${month}`;
-  console.log("running monthly_count on ", month, ".", year);
   const supabase = createClient(PUBLIC_SUPABASE_URL, PRIVATE_SUPABASE_SERVICE_KEY);
   //get all transactions from the month and year given in the arguments
-  //   let all_transactions: Array<Transaction> = await getTransactions(year, month);
   let all_transactions: Array<Transaction> = await supabase
     .from("transactions")
     .select("*")
@@ -24,17 +22,27 @@ export default async function start_monthly_count(year: number, month: number) {
       return data.data as Array<Transaction>;
     });
 
-  console.log(all_transactions);
+  //change the category to the category in the category_mapping
+  all_transactions.forEach((transaction: Transaction) => {
+    const category = category_mapping.get(transaction.category);
+    if (category) {
+      transaction.category = category;
+    } else {
+      transaction.category = transaction.category;
+    }
+  });
+  // console.log(all_transactions);
   //create a map to count the amount of each category
   let category_count = new Map<string, number>();
-  all_transactions.forEach((transaction) => {
-    if (category_count.has(transaction.category)) {
-      let cur_amount = category_count.get(transaction.category);
+  all_transactions.forEach((transaction: Transaction) => {
+    const category = category_mapping.get(transaction.category);
+    if (category && category_count.has(category)) {
+      let cur_amount = category_count.get(category);
       if (cur_amount != undefined) {
-        category_count.set(transaction.category, cur_amount + transaction.amount);
+        category_count.set(category, cur_amount + transaction.amount);
       }
-    } else {
-      category_count.set(transaction.category, transaction.amount);
+    } else if (category) {
+      category_count.set(category, transaction.amount);
     }
   });
 
@@ -45,20 +53,22 @@ export default async function start_monthly_count(year: number, month: number) {
 
   // category_count.set('סה"כ הוצאות', total_amount);
   //add the total amount of the cateogries: "מסעדות/קפה", "קניות", "תחבורה,"תקשורת","מכולת/סופר" to the csv file
-  let unimportant_categories = ["בתי ספר", "אחרים", "פנאי בילוי", "שונות", "אחר", "מילואים", "תיירות"];
+  let unimportant_categories = ["לימודים", "אחר", "פנאי ובילויים", "משכורת", "מילואים"];
   let important_categories_total = total_amount;
   unimportant_categories.forEach((category) => {
-    if (category_count.has(category)) {
-      important_categories_total -= category_count.get(category) as number;
+    const cat = category_mapping.get(category);
+    if (cat && category_count.has(cat)) {
+      important_categories_total -= category_count.get(cat) as number;
     }
   });
 
-  return { category_count, all_transactions };
+  return { category_count, all_transactions, important_categories_total };
 }
 
 /* TODO: categorize bank account transactions
+TODO: add logos to the site
 TODO: combine aliases of the same category 
-TODO: make scraping run on server each day
 TODO: divide things like BIT to expenses and income
-TODO: add logos to the categories and the site
+TODO: correct known wrong categories and save them in a file.
+TODO: devide the categories to regular and irregular expenses
 */

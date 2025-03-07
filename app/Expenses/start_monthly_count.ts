@@ -2,7 +2,46 @@ import getTransactions from "../../lib/scraper/getTransaction";
 import { Transaction } from "../../lib/scraper/scraper";
 import { PRIVATE_SUPABASE_SERVICE_KEY, PUBLIC_SUPABASE_URL } from "../../lib/config";
 import { createClient } from "@supabase/supabase-js";
-import { category_mapping } from "./page";
+
+export let category_mapping: Map<string, string> = new Map<string, string>([
+  ["מסעדות/קפה", "מסעדות/קפה"],
+  ["פארמה", "מכולת/סופר"],
+  ["מעדניות", "מכולת/סופר"],
+  ["שרות רפואי", "רפואה"],
+  ["רפואה", "רפואה"],
+  ["מכולת/סופר", "מכולת/סופר"],
+  ["דלק", "דלק"],
+  ["תקשורת", "תקשורת"],
+  ["תרבות", "פנאי ובילויים"],
+  ["פנאי ובילויים", "פנאי ובילויים"],
+  ["העברות כספים פייבוקס D/MS", "העברות כספים"],
+  ["העברות כספים", "העברות כספים"],
+  ["שירותי רכב", "הוצאות רכב"],
+  ["הוצאות רכב", "הוצאות רכב"],
+  ["בתי ספר", "לימודים"],
+  ["לימודים", "לימודים"],
+  ["שכר דירה", "שכר דירה"],
+  ["מילואים", "מילואים"],
+  ["משכורת", "משכורת"],
+  ["אחר", "אחר"],
+]);
+
+export let category_images: Map<string, string> = new Map<string, string>([
+  ["מסעדות/קפה", "restaurant.svg"],
+  ["מכולת/סופר", "shopping-cart.svg"],
+  ["דלק", "gasoline.svg"],
+  ["תקשורת", "communications.svg"],
+  ["דלק", "gasoline.svg"],
+  ["רפואה", "health.svg"],
+  ["פנאי ובילויים", "party.svg"],
+  ["העברות כספים", "cash-flow-icon.svg"],
+  ["הוצאות רכב", "car.svg"],
+  ["מילואים", "military.svg"],
+  ["משכורת", "salary.svg"],
+  ["אחר", "globe.svg"],
+  ["לימודים", "study.svg"],
+  ["שכר דירה", "rent.svg"],
+]);
 
 /**
  *  sum all transactions in a given month and year for each category

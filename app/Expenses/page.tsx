@@ -2,51 +2,13 @@ import styles from "./page.module.css";
 import start_monthly_count from "./start_monthly_count";
 import data from "./mockData.json";
 import { Transaction } from "../../lib/scraper/scraper";
+import { category_images } from "./start_monthly_count";
+
 export interface categorySummary {
   name: string;
   amount: number;
   id?: number;
 }
-
-export let category_mapping: Map<string, string> = new Map<string, string>([
-  ["מסעדות/קפה", "מסעדות/קפה"],
-  ["פארמה", "מכולת/סופר"],
-  ["מעדניות", "מכולת/סופר"],
-  ["שרות רפואי", "רפואה"],
-  ["רפואה", "רפואה"],
-  ["מכולת/סופר", "מכולת/סופר"],
-  ["דלק", "דלק"],
-  ["תקשורת", "תקשורת"],
-  ["תרבות", "פנאי ובילויים"],
-  ["פנאי ובילויים", "פנאי ובילויים"],
-  ["העברות כספים פייבוקס D/MS", "העברות כספים"],
-  ["העברות כספים", "העברות כספים"],
-  ["שירותי רכב", "הוצאות רכב"],
-  ["הוצאות רכב", "הוצאות רכב"],
-  ["בתי ספר", "לימודים"],
-  ["לימודים", "לימודים"],
-  ["שכר דירה", "שכר דירה"],
-  ["מילואים", "מילואים"],
-  ["משכורת", "משכורת"],
-  ["אחר", "אחר"],
-]);
-
-export let category_images: Map<string, string> = new Map<string, string>([
-  ["מסעדות/קפה", "restaurant.svg"],
-  ["מכולת/סופר", "shopping-cart.svg"],
-  ["דלק", "gasoline.svg"],
-  ["תקשורת", "communications.svg"],
-  ["דלק", "gasoline.svg"],
-  ["רפואה", "health.svg"],
-  ["פנאי ובילויים", "party.svg"],
-  ["העברות כספים", "cash-flow-icon.svg"],
-  ["הוצאות רכב", "car.svg"],
-  ["מילואים", "military.svg"],
-  ["משכורת", "salary.svg"],
-  ["אחר", "globe.svg"],
-  ["לימודים", "study.svg"],
-  ["שכר דירה", "rent.svg"],
-]);
 
 export default async function ExpensesPage() {
   // const { category_count, all_transactions } = {[], []};

@@ -63,9 +63,8 @@ export default async function start_monthly_count(year: number, month: number) {
   let unimportant_categories = ["לימודים", "אחר", "פנאי ובילויים", "משכורת", "מילואים"];
   let important_categories_total = total_amount;
   unimportant_categories.forEach((category) => {
-    const cat = category_mapping.get(category);
-    if (cat && category_count.has(cat)) {
-      important_categories_total -= category_count.get(cat) as number;
+    if (category && category_count.has(category)) {
+      important_categories_total -= category_count.get(category) as number;
     }
   });
 

@@ -93,7 +93,11 @@ function findCategory(description: string, category: string | undefined, amount:
     category.includes("פייבוקס") ||
     description.includes("BIT")
   ) {
-    category = "העברות כספים";
+    if (amount < 0) {
+      category = "העברות כספים";
+    } else {
+      category = "קבלת כספים";
+    }
   } else if (category.includes("מלונאות ואירוח")) {
     category = "תיירות";
   } else if (

@@ -50,7 +50,7 @@ export async function scraper(
         account.txns.forEach((transaction) => {
           const d = new Date(transaction.date);
           if (d.getMonth() + 1 == month && d.getFullYear() == year && notCreditCard(transaction.description)) {
-            let category = findCategory(transaction.description, transaction.category);
+            let category = findCategory(transaction.description, transaction.category, transaction.originalAmount);
             // console.log(
             //   transaction.description,
             //   transaction.originalAmount,
@@ -81,20 +81,30 @@ export async function scraper(
 }
 
 //function that categorizes the transaction by its description
-function findCategory(description: string, category: string | undefined): string {
+function findCategory(description: string, category: string | undefined, amount: number): string {
   category = category || "אחר";
   if (description.includes("משכורת")) {
     category = "משכורת";
-  } else if (description.includes("שיק")) {
+  } else if (description.includes("שיק") && amount == 3250) {
     category = "שכר דירה";
-  } else if (description.includes("ביט")) {
-    category = "העברת כספים ביט VD/MS";
+  } else if (
+    description.includes("ביט") ||
+    description.includes("paybox") ||
+    category.includes("פייבוקס") ||
+    description.includes("BIT")
+  ) {
+    category = "העברות כספים";
   } else if (category.includes("מלונאות ואירוח")) {
     category = "תיירות";
-  } else if (description.includes("BIT")) {
-    category = "העברת כספים ביט VD/MS";
-  } else if (category.includes("רשתות שווק מזון") || category.includes("מינימרקטים ומכולות")) {
+  } else if (
+    category.includes("רשתות שווק מזון") ||
+    category.includes("מינימרקטים ומכולות") ||
+    category.includes("מעדניות") ||
+    category.includes("פארמה")
+  ) {
     category = "מכולת/סופר";
+  } else if (category.includes("רפואי") || category.includes("בריאות") || category.includes("רפואה")) {
+    category = "רפואה";
   } else if (description.includes("התימני") || description.includes("WOLT")) {
     category = "מסעדות/קפה";
   } else if (description.includes('ב"ל מילואים') || description.includes('מופ"ת')) {
@@ -105,8 +115,12 @@ function findCategory(description: string, category: string | undefined): string
     category = "מוסיקה";
   } else if (category.includes("שונות") || category.includes("אחר")) {
     category = "אחר";
-  } else if (category.includes("פנאי")) {
-    category = "פנאי בילוי";
+  } else if (category.includes("רכב")) {
+    category = "הוצאות רכב";
+  } else if (category.includes("פנאי") || category.includes("תרבות")) {
+    category = "פנאי ובילויים";
+  } else if (category.includes("בתי ספר") || category.includes("מוסדות לימוד") || category.includes("לימודים")) {
+    category = "לימודים";
   }
   return category || "אחר";
 }

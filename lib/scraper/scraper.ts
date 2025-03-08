@@ -85,7 +85,7 @@ function findCategory(description: string, category: string | undefined, amount:
   category = category || "אחר";
   if (description.includes("משכורת")) {
     category = "משכורת";
-  } else if (description.includes("שיק") && amount == 3250) {
+  } else if (description.includes("שיק") && amount == -3250) {
     category = "שכר דירה";
   } else if (
     description.includes("ביט") ||

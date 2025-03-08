@@ -22,6 +22,8 @@ export default async function ExpensesPage() {
     month_to_fetch
   );
 
+  console.log(category_count, all_transactions, important_categories_total);
+
   // const totalRegularExpenses: number = category_count.get("סהכ קבועות") || 0;
   const totalExpenses: number = category_count
     .values()
